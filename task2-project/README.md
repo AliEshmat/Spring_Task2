@@ -14,11 +14,12 @@ REST API for product management. Simple application with H2 database demonstrati
 - Swagger UI
 
 ## How to Run
-1. Run `Task2Application.java`
-2. Application starts on `http://localhost:8080`
+
+1. Run Task2Application.java
+2. Application starts on http://localhost:8080
 
 ## Project Structure
-```
+
 product/
 ├── api/
 │   ├── controller/ProductController.java
@@ -31,97 +32,116 @@ product/
     ├── ProductMapper.java
     ├── ProductExceptionHandler.java
     └── exception/ProductNotFoundException.java
-```
-# all screenshots and endpoint work are located in task2-project\screenshots
 
 ## Useful Links
 
-- Swagger: http://localhost:8080/swagger-ui/index.html
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
 - H2 Console: http://localhost:8080/console
-  - JDBC URL: `jdbc:h2:mem:testdb`
-  - Username: `sa`
+  - JDBC URL: jdbc:h2:mem:testdb
+  - Username: sa
   - Password: (empty)
+
+---
 
 ## API Endpoints
 
 ### 1. Create Product
-```bash
-POST http://localhost:8080/api/v1/products
-Content-Type: application/json
 
+POST /api/v1/products
+
+Creates a new product in the database.
+
+Request:
 {
-  "name": "Laptop Dell"
+  "name": "Ali",
+  "email": "Ali@mail.com"
 }
 
-# Response: 201 Created
-{
-  "id": 1,
-  "name": "Laptop Dell"
-}
-```
-
-### 2. Get Product by ID
-```bash
-GET http://localhost:8080/api/v1/products/1
-
-# Response: 200 OK
+Response: 201 Created
 {
   "id": 1,
-  "name": "Laptop Dell"
+  "name": "Ali"
 }
-```
 
-### 3. Get All Products
-```bash
-GET http://localhost:8080/api/v1/products
+Swagger UI:
 
-# Response: 200 OK
+![Create Product - Request](screenshots/CRUD/Create(1).png)
+
+![Create Product - Response](screenshots/CRUD/Create_Response(2).png)
+
+---
+
+### 2. Get All Products
+
+GET /api/v1/products
+
+Retrieves all products from the database.
+
+Response: 200 OK
 [
   {
     "id": 1,
-    "name": "Laptop Dell"
-  },
-  {
-    "id": 2,
-    "name": "iPhone 15"
+    "name": "Ali"
   }
 ]
-```
 
-### 4. Update Product
-```bash
-PUT http://localhost:8080/api/v1/products/1
-Content-Type: application/json
+Swagger UI:
 
+![Get All Products](screenshots/CRUD/Read_response(3).png)
+
+---
+
+### 3. Update Product
+
+PUT /api/v1/products/{id}
+
+Updates an existing product by ID.
+
+Request:
 {
-  "name": "Laptop Dell XPS 15"
+  "name": "Ali Updated"
 }
 
-# Response: 200 OK
+Response: 200 OK
 {
   "id": 1,
-  "name": "Laptop Dell XPS 15"
+  "name": "Ali Updated"
 }
-```
 
-### 5. Delete Product
-```bash
-DELETE http://localhost:8080/api/v1/products/1
+Swagger UI:
 
-# Response: 204 No Content
-```
+![Update Product - Request](screenshots/CRUD/Update(4).png)
+
+![Update Product - Response](screenshots/CRUD/Update_response(5).png)
+
+---
+
+### 4. Delete Product
+
+DELETE /api/v1/products/{id}
+
+Deletes a product by ID.
+
+Response: 204 No Content
+
+Swagger UI:
+
+![Delete Product - Request](screenshots/CRUD/Delete(6).png)
+
+![Delete Product - Response](screenshots/CRUD/Delete_response(7).png)
+
+---
 
 ## Error Handling
 
 When trying to get/update/delete a non-existent product:
-```bash
-GET http://localhost:8080/api/v1/products/999
 
-# Response: 404 Not Found
+Response: 404 Not Found
 {
   "message": "Product with id: 999 not found"
 }
-```
+
+---
 
 ## Testing via Swagger
 
@@ -130,17 +150,35 @@ GET http://localhost:8080/api/v1/products/999
 3. Click "Try it out"
 4. Enter data and click "Execute"
 
+All endpoints are documented and can be tested interactively through Swagger UI.
+
+---
+
 ## Database Verification
 
+### H2 Console Access
+
 1. Open http://localhost:8080/console
-```sql
+2. Enter connection details:
+   - JDBC URL: jdbc:h2:mem:testdb
+   - Username: sa
+   - Password: (leave empty)
+3. Click "Connect"
+
+### SQL Queries
+
+View all products:
 SELECT * FROM PRODUCT;
-```
+
+Check table structure:
+SHOW COLUMNS FROM PRODUCT;
+
+---
 
 ## Main Components
 
-**Product (Entity)** - data model for database
-```java
+### Product (Entity)
+Data model for database
 @Entity
 public class Product {
     @Id
@@ -148,39 +186,38 @@ public class Product {
     private Long id;
     private String name;
 }
-```
 
-**ProductRepository** - database operations
-```java
+### ProductRepository
+Database operations - extends JpaRepository for automatic CRUD methods
 public interface ProductRepository extends JpaRepository<Product, Long> {
 }
-```
 
-**ProductService** - business logic
-```java
+### ProductService
+Business logic layer - handles data processing
 @Service
 public class ProductService {
 }
-```
 
-**ProductController** - REST API endpoints
-```java
+### ProductController
+REST API endpoints - handles HTTP requests and responses
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {
 }
-```
 
-**ProductMapper** - conversion between DTO and Entity
-```java
+### ProductMapper
+Conversion between DTO and Entity objects
 @Component
 public class ProductMapper {
 }
-```
 
-**ProductExceptionHandler** - error handling
-```java
+### ProductExceptionHandler
+Global error handling for all controllers
 @ControllerAdvice
 public class ProductExceptionHandler {
 }
-```
+
+
+
+
+
