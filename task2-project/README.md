@@ -20,6 +20,8 @@ REST API for product management. Simple application with H2 database demonstrati
 
 ## Project Structure
 
+![Project Structure](screenshots/project_structure.png)
+
 product/
 ├── api/
 │   ├── controller/ProductController.java
@@ -170,6 +172,8 @@ All endpoints are documented and can be tested interactively through Swagger UI.
 View all products:
 SELECT * FROM PRODUCT;
 
+![ Database Verification](screenshots/database.png)
+
 Check table structure:
 SHOW COLUMNS FROM PRODUCT;
 
@@ -216,8 +220,3 @@ Global error handling for all controllers
 @ControllerAdvice
 public class ProductExceptionHandler {
 }
-
-
-
-
-
